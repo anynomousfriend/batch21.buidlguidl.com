@@ -1,4 +1,6 @@
 import Image from "next/image";
+import type { NextPage } from "next";
+import { Address } from "~~/components/scaffold-eth";
 
 // Reusable SVG Icon Component
 const Icon = ({ path, stroke = false }: { path: string; stroke?: boolean }) => (
@@ -24,28 +26,52 @@ const icons = {
     "M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9",
 };
 
-export default function BuilderProfile() {
+type IconKey = keyof typeof icons;
+
+type SocialLink = {
+  href: string;
+  icon: IconKey;
+  title: string;
+};
+
+const socialLinks: SocialLink[] = [
+  { href: "https://x.com/diegobianqui", icon: "x", title: "X (Twitter)" },
+  { href: "https://www.linkedin.com/in/diegobianqui/", icon: "linkedin", title: "LinkedIn" },
+  { href: "https://github.com/diegobianqui", icon: "github", title: "GitHub" },
+  {
+    href: "https://speedrunethereum.com/builders/diegodev.eth",
+    icon: "globe",
+    title: "Speed Run Ethereum",
+  },
+  { href: "https://profiles.cyfrin.io/u/diegobianqui", icon: "globe", title: "Cyfrin Profile" },
+];
+
+const DiegoBianquiPage: NextPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base-100">
       <div className="max-w-2xl w-full">
         <div className="card bg-base-200 shadow-xl">
           <div className="card-body items-center text-center">
-            {/* Profile Picture */}
-            <div className="avatar mb-6">
-              <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <Image
-                  src="https://euc.li/diegodev.eth"
-                  alt="Diego - Builder Profile"
-                  width={128}
-                  height={128}
-                  className="rounded-full"
-                />
+            {/* Profile */}
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <div className="avatar">
+                <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <Image
+                    src="https://euc.li/diegodev.eth"
+                    alt="Diego - Builder Profile"
+                    width={128}
+                    height={128}
+                    className="rounded-full"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <h1 className="card-title text-3xl">Diego</h1>
+                <div className="badge badge-primary badge-lg font-mono text-xs">
+                  <Address address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23" onlyEnsOrAddress />
+                </div>
               </div>
             </div>
-
-            {/* Name & Address */}
-            <h1 className="card-title text-3xl mb-2">Diego Bianqui</h1>
-            <div className="badge badge-primary badge-lg mb-6 font-mono text-xs">diegodev.eth</div>
 
             {/* About Section */}
             <div className="text-left w-full mb-6">
@@ -60,17 +86,7 @@ export default function BuilderProfile() {
             {/* Social Links */}
             <div className="divider">Connect</div>
             <div className="flex flex-wrap gap-3 justify-center w-full">
-              {[
-                { href: "https://x.com/diegobianqui", icon: "x", title: "X (Twitter)" },
-                { href: "https://www.linkedin.com/in/diegobianqui/", icon: "linkedin", title: "LinkedIn" },
-                { href: "https://github.com/diegobianqui", icon: "github", title: "GitHub" },
-                {
-                  href: "https://speedrunethereum.com/builders/diegodev.eth",
-                  icon: "globe",
-                  title: "Speed Run Ethereum",
-                },
-                { href: "https://profiles.cyfrin.io/u/diegobianqui", icon: "globe", title: "Cyfrin Profile" },
-              ].map((social, index) => (
+              {socialLinks.map((social, index) => (
                 <a
                   key={index}
                   href={social.href}
@@ -79,7 +95,7 @@ export default function BuilderProfile() {
                   className="btn btn-circle btn-primary hover:btn-secondary"
                   title={social.title}
                 >
-                  <Icon path={icons[social.icon as keyof typeof icons]} stroke={social.icon === "globe"} />
+                  <Icon path={icons[social.icon]} stroke={social.icon === "globe"} />
                 </a>
               ))}
             </div>
@@ -88,4 +104,6 @@ export default function BuilderProfile() {
       </div>
     </div>
   );
-}
+};
+
+export default DiegoBianquiPage;
