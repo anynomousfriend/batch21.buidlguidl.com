@@ -7,7 +7,7 @@ const numLines = 20;
 const speed = 100; // animation interval in ms
 const amplitude = 17;
 
-export default function AsciiWave() {
+export function AsciiWave() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tick, setTick] = useState(0);
   const [waveLength, setWaveLength] = useState(35); // will be updated based on container width

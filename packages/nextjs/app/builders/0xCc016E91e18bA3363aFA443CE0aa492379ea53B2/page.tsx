@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AsciiWave from "./AsciiWave";
+import { AsciiWave } from "./AsciiWave";
 import type { NextPage } from "next";
 import { Address } from "~~/components/scaffold-eth";
 
