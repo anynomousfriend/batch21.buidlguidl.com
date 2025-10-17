@@ -2,6 +2,8 @@
 
 import React from "react";
 import type { NextPage } from "next";
+import { normalize } from "viem/ens";
+import { useEnsAvatar, useEnsName } from "wagmi";
 // Import Scaffold-ETH components
 import { Address, BlockieAvatar } from "~~/components/scaffold-eth";
 
@@ -101,11 +103,31 @@ const socialLinks: SocialLink[] = [
   { href: "https://profiles.cyfrin.io/u/diegobianqui", icon: "globe", title: "Cyfrin Profile" },
 ];
 
-// Profile Avatar Component - simplified to pass linting
+// Profile Avatar Component - matching Address component behavior
 const ProfileAvatar = ({ address, size }: { address: string; size: number }) => {
-  // Use basic BlockieAvatar with explicit ensImage prop set to undefined
-  // This ensures the blockie fallback works properly
-  return <BlockieAvatar address={address as `0x${string}`} ensImage={undefined} size={size} />;
+  // Always call hooks at the top level, matching Address component logic
+  const ensNameResult = useEnsName({
+    address: address as `0x${string}`,
+    chainId: 1,
+    query: {
+      enabled: Boolean(address),
+    },
+  });
+
+  const ensAvatarResult = useEnsAvatar({
+    name: ensNameResult.data ? normalize(ensNameResult.data) : undefined,
+    chainId: 1,
+    query: {
+      enabled: Boolean(ensNameResult.data),
+      gcTime: 30_000,
+    },
+  });
+
+  console.log("ProfileAvatar - ENS name:", ensNameResult.data);
+  console.log("ProfileAvatar - ENS avatar:", ensAvatarResult.data);
+
+  // Use the same BlockieAvatar component as Address, with the same props
+  return <BlockieAvatar address={address as `0x${string}`} ensImage={ensAvatarResult.data} size={size} />;
 };
 
 const DiegoBianquiPageContent: React.FC = () => {
