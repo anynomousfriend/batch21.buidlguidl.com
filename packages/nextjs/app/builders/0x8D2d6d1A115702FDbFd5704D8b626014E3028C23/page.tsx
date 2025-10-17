@@ -1,22 +1,37 @@
 import React from "react";
 import Image from "next/image";
 import type { NextPage } from "next";
-import { Address } from "~~/components/scaffold-eth";
 
-// Add error logging
+// Temporarily comment out Address to test
+// import { Address } from "~~/components/scaffold-eth";
+
+// Add error logging with better error details
 if (typeof window !== "undefined") {
   window.addEventListener("unhandledrejection", event => {
-    console.error("Unhandled promise rejection:", event.reason);
+    console.error("Unhandled promise rejection details:", {
+      reason: event.reason,
+      promise: event.promise,
+      stack: event.reason?.stack,
+    });
+  });
+
+  window.addEventListener("error", event => {
+    console.error("Global error:", {
+      message: event.message,
+      filename: event.filename,
+      line: event.lineno,
+      error: event.error,
+    });
   });
 }
 // Icon Components - using simple text/emoji approach (no SVG paths!)
-const XIcon = () => React.createElement("span", { className: "text-lg font-bold" }, "𝕏");
+const XIcon = () => <span className="text-lg font-bold">𝕏</span>;
 
-const LinkedInIcon = () => React.createElement("span", { className: "text-lg font-bold" }, "in");
+const LinkedInIcon = () => <span className="text-lg font-bold">in</span>;
 
-const GitHubIcon = () => React.createElement("span", { className: "text-lg" }, "⚡");
+const GitHubIcon = () => <span className="text-lg">⚡</span>;
 
-const GlobeIcon = () => React.createElement("span", { className: "text-lg" }, "🌐");
+const GlobeIcon = () => <span className="text-lg">🌐</span>;
 
 // Social link types
 type IconKey = "x" | "linkedin" | "github" | "globe";
@@ -61,7 +76,9 @@ const DiegoBianquiPage: NextPage = () => {
               <div className="flex flex-col items-center gap-2">
                 <h1 className="card-title text-3xl">Diego</h1>
                 <div className="badge badge-primary badge-lg font-mono text-xs">
-                  <Address address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23" onlyEnsOrAddress />
+                  {/* Temporarily commented out to test */}
+                  {/* <Address address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23" onlyEnsOrAddress /> */}
+                  0x8D2d...C23
                 </div>
               </div>
             </div>
