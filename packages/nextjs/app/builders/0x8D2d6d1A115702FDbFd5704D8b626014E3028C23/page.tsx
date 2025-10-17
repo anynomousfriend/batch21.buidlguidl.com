@@ -1,9 +1,51 @@
-import React from "react";
-import Image from "next/image";
-import type { NextPage } from "next";
+"use client";
 
-// Temporarily comment out Address to test
-// import { Address } from "~~/components/scaffold-eth";
+import React from "react";
+import type { NextPage } from "next";
+// Import Scaffold-ETH components
+import { Address, BlockieAvatar } from "~~/components/scaffold-eth";
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error?: Error }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    console.error("ErrorBoundary caught an error:", error);
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("ErrorBoundary caught an error:", { error, errorInfo });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center p-4 bg-base-100">
+          <div className="card bg-error text-error-content">
+            <div className="card-body">
+              <h2 className="card-title">Something went wrong!</h2>
+              <p>Error: {this.state.error?.message}</p>
+              <div className="card-actions">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => this.setState({ hasError: false, error: undefined })}
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // Add error logging with better error details
 if (typeof window !== "undefined") {
@@ -12,7 +54,11 @@ if (typeof window !== "undefined") {
       reason: event.reason,
       promise: event.promise,
       stack: event.reason?.stack,
+      stringified: JSON.stringify(event.reason, null, 2),
     });
+
+    // Prevent the default behavior of logging "[object Object]"
+    event.preventDefault();
   });
 
   window.addEventListener("error", event => {
@@ -21,6 +67,7 @@ if (typeof window !== "undefined") {
       filename: event.filename,
       line: event.lineno,
       error: event.error,
+      stack: event.error?.stack,
     });
   });
 }
@@ -54,7 +101,14 @@ const socialLinks: SocialLink[] = [
   { href: "https://profiles.cyfrin.io/u/diegobianqui", icon: "globe", title: "Cyfrin Profile" },
 ];
 
-const DiegoBianquiPage: NextPage = () => {
+// Profile Avatar Component - simplified to pass linting
+const ProfileAvatar = ({ address, size }: { address: string; size: number }) => {
+  // Use basic BlockieAvatar with explicit ensImage prop set to undefined
+  // This ensures the blockie fallback works properly
+  return <BlockieAvatar address={address as `0x${string}`} ensImage={undefined} size={size} />;
+};
+
+const DiegoBianquiPageContent: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base-100">
       <div className="max-w-2xl w-full">
@@ -64,21 +118,18 @@ const DiegoBianquiPage: NextPage = () => {
             <div className="flex flex-col items-center gap-4 mb-6">
               <div className="avatar">
                 <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <Image
-                    src="https://euc.li/diegodev.eth"
-                    alt="Diego - Builder Profile"
-                    width={128}
-                    height={128}
-                    className="rounded-full"
-                  />
+                  <ProfileAvatar address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23" size={128} />
                 </div>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <h1 className="card-title text-3xl">Diego</h1>
                 <div className="badge badge-primary badge-lg font-mono text-xs">
-                  {/* Temporarily commented out to test */}
-                  {/* <Address address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23" onlyEnsOrAddress /> */}
-                  0x8D2d...C23
+                  <Address
+                    address="0x8D2d6d1A115702FDbFd5704D8b626014E3028C23"
+                    format="short"
+                    size="xs"
+                    onlyEnsOrAddress
+                  />
                 </div>
               </div>
             </div>
@@ -116,6 +167,14 @@ const DiegoBianquiPage: NextPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const DiegoBianquiPage: NextPage = () => {
+  return (
+    <ErrorBoundary>
+      <DiegoBianquiPageContent />
+    </ErrorBoundary>
   );
 };
 
