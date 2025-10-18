@@ -106,7 +106,7 @@ const Eddy: NextPage = () => {
       `}</style>
 
       <section
-        className={`relative z-10 flex w-full flex-col ${borderColor} ${bgOpacity} ${glowColor} border-2 border-dashed px-4 py-6 sm:h-[60vh] sm:w-[90vw] sm:px-6 sm:py-8 md:w-[70vw] lg:w-[50vw] lg:max-w-3xl lg:px-8 ${pressStart.className}`}
+        className={`relative z-10 -mt-[10vh] flex w-full flex-col ${borderColor} ${bgOpacity} ${glowColor} border-2 border-dashed px-4 py-6 sm:h-[60vh] sm:w-[90vw] sm:px-6 sm:py-8 md:w-[70vw] lg:w-[50vw] lg:max-w-3xl lg:px-8 ${pressStart.className}`}
       >
         <div className="flex flex-1">
           <div className="flex flex-1 flex-col items-center justify-between px-2 py-4 sm:px-4 lg:px-6">
