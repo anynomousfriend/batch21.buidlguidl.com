@@ -1,77 +1,164 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Press_Start_2P } from "next/font/google";
 import type { NextPage } from "next";
+import { useTheme } from "next-themes";
+import { SwitchTheme } from "~~/components/SwitchTheme";
 
 const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"] });
 
-// Generate static stars once for a subtle animated feel without re-render cost
-const stars = Array.from({ length: 150 }, (_, i) => ({
-  id: i,
-  left: (i * 7919) % 100,
-  top: (i * 6421) % 100,
-  size: i % 5 === 0 ? (i % 2 === 0 ? "%" : "*") : ".",
-  opacity: 0.3 + ((i * 37) % 70) / 100,
-}));
-
 const Eddy: NextPage = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [fallingItems, setFallingItems] = useState<
+    Array<{
+      id: number;
+      left: number;
+      animationDuration: number;
+      animationDelay: number;
+      size: string;
+      symbol: string;
+    }>
+  >([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Generate falling stars/snow when mounted or theme changes
+  useEffect(() => {
+    if (mounted) {
+      const items = Array.from({ length: 70 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        animationDuration: 8 + Math.random() * 10,
+        animationDelay: Math.random() * 4, // Stagger start times
+        size: Math.random() > 0.7 ? "sm" : "xs",
+        symbol: (() => {
+          const rand = Math.random();
+          if (rand > 0.92) return "ufo"; // 8% UFOs
+          if (rand > 0.8) return "moon"; // 12% moons
+          return "star"; // 80% stars
+        })(),
+      }));
+      setFallingItems(items);
+    }
+  }, [mounted, resolvedTheme]);
+
+  const isDarkMode = resolvedTheme === "dark";
+
+  // Theme-specific colors
+  const bgGradient = isDarkMode
+    ? "bg-[radial-gradient(circle_at_top,_#161616,_#010101_70%)]"
+    : "bg-[radial-gradient(circle_at_top,_#e0f2fe,_#bae6fd_70%)]";
+
+  const textColor = isDarkMode ? "text-white" : "text-gray-900";
+  const borderColor = isDarkMode ? "border-white" : "border-blue-600";
+  const glowColor = isDarkMode ? "shadow-[0_0_38px_rgba(57,255,20,0.35)]" : "shadow-[0_0_38px_rgba(37,99,235,0.35)]";
+  const bgOpacity = isDarkMode ? "bg-black/85" : "bg-white/80";
+
+  if (!mounted) return null;
+
   return (
-    <main className="relative flex min-h-screen items-start justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_#161616,_#010101_70%)] pt-20 text-white">
-      {/* Starry background */}
+    <main
+      className={`relative flex min-h-screen items-center justify-center overflow-hidden ${bgGradient} px-4 ${textColor}`}
+    >
+      {/* Theme Toggle - Fixed position */}
+      <div className="fixed right-4 top-4 z-20 sm:right-8 sm:top-8">
+        <SwitchTheme />
+      </div>
+
+      {/* Falling stars (dark mode) / Snowflakes (light mode) */}
       <div className="pointer-events-none absolute inset-0">
-        {stars.map(star => (
-          <span
-            key={star.id}
-            className="absolute font-mono text-white"
+        {fallingItems.map(item => (
+          <div
+            key={item.id}
+            className={`absolute animate-fall ${isDarkMode ? "text-white" : "text-white"}`}
             style={{
-              left: `${star.left}%`,
-              top: `${star.top}%`,
-              opacity: star.opacity,
-              fontSize: star.size === "." ? "8px" : "12px",
+              left: `${item.left}%`,
+              top: "-20px",
+              animationDuration: `${item.animationDuration}s`,
+              animationDelay: `${item.animationDelay}s`,
+              fontSize: item.size === "lg" ? "18px" : "14px",
+              opacity: isDarkMode ? 0.7 : 0.8,
             }}
           >
-            {star.size}
-          </span>
+            {isDarkMode ? (item.symbol === "ufo" ? "🛸" : item.symbol === "moon" ? "☾" : "✦") : "❄"}
+          </div>
         ))}
       </div>
 
+      <style jsx>{`
+        @keyframes fall {
+          0% {
+            transform: translateY(-20px) rotate(0deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+          }
+        }
+        .animate-fall {
+          animation: fall linear infinite;
+        }
+      `}</style>
+
       <section
-        className={`relative z-10 flex h-[60vh] w-[50vw] max-w-3xl flex-col border-2 border-dashed border-white bg-black/85 px-8 py-8 shadow-[0_0_38px_rgba(57,255,20,0.35)] ${pressStart.className}`}
+        className={`relative z-10 flex w-full flex-col ${borderColor} ${bgOpacity} ${glowColor} border-2 border-dashed px-4 py-6 sm:h-[60vh] sm:w-[90vw] sm:px-6 sm:py-8 md:w-[70vw] lg:w-[50vw] lg:max-w-3xl lg:px-8 ${pressStart.className}`}
       >
         <div className="flex flex-1">
-          <div className="flex flex-1 flex-col items-center justify-between px-6 py-4">
-            <h1 className="text-center text-xl tracking-[0.8em] text-white md:text-xl">** Eddy Lim **</h1>
+          <div className="flex flex-1 flex-col items-center justify-between px-2 py-4 sm:px-4 lg:px-6">
+            <h1 className="text-center text-sm tracking-[0.4em] sm:text-lg sm:tracking-[0.6em] lg:text-xl lg:tracking-[0.8em]">
+              ** Eddy Lim **
+            </h1>
 
-            <div className="text-center text-[9px] uppercase text-white/80">
+            <div className="text-center text-[8px] uppercase text-opacity-80 sm:text-[9px]">
               <p className="mb-2">{`// Bio //`}</p>
-              <p className="normal-case leading-relaxed text-white/80">
+              <p className="normal-case leading-relaxed opacity-80">
                 Juz graduated from my CS degree and now diving deep into the Web3 rabbit hole...
               </p>
             </div>
 
-            <div className="grid w-full grid-cols-1 gap-6 text-[8px] text-white/85 md:grid-cols-2">
+            <div className="grid w-full grid-cols-1 gap-4 text-[8px] opacity-85 sm:gap-6 md:grid-cols-2">
               <div className="py-2 text-center uppercase">
-                <p className="mb-4 text-[10px] text-white">[ Socials ]</p>
-                <ul className="space-y-3 text-[9px] normal-case tracking-normal">
+                <p className="mb-3 text-[9px] sm:mb-4 sm:text-[10px]">[ Socials ]</p>
+                <ul className="space-y-2 text-[8px] normal-case tracking-normal sm:space-y-3 sm:text-[9px]">
                   <li>
-                    <a href="https://github.com/Eddy3129" className="transition-colors hover:text-[#39ff14]">
+                    <a
+                      href="https://github.com/Eddy3129"
+                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                    >
                       GitHub ↗
                     </a>
                   </li>
                   <li>
-                    <a href="https://t.me/Eddy3129" className="transition-colors hover:text-[#39ff14]">
+                    <a
+                      href="https://t.me/Eddy3129"
+                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                    >
                       Telegram ↗
                     </a>
                   </li>
                   <li>
-                    <a href="https://x.com/eddyy_eth" className="transition-colors hover:text-[#39ff14]">
+                    <a
+                      href="https://x.com/eddyy_eth"
+                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                    >
                       X (Twitter) ↗
                     </a>
                   </li>
                   <li>
                     <a
                       href="https://www.linkedin.com/in/eddy-limfy/"
-                      className="transition-colors hover:text-[#39ff14]"
+                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
                     >
                       LinkedIn ↗
                     </a>
@@ -80,23 +167,29 @@ const Eddy: NextPage = () => {
               </div>
 
               <div className="py-2 text-center uppercase">
-                <p className="mb-4 text-[10px] text-white">[ Experience ]</p>
-                <div className="space-y-4 text-[9px] normal-case tracking-normal text-white/80">
+                <p className="mb-3 text-[9px] sm:mb-4 sm:text-[10px]">[ Experience ]</p>
+                <div className="space-y-3 text-[8px] normal-case tracking-normal opacity-80 sm:space-y-4 sm:text-[9px]">
                   <p>
-                    <span className="text-white">
+                    <span>
                       Co-Founder ·{" "}
-                      <a href="https://givehope-x8qk.onrender.com/" className="transition-colors hover:text-[#39ff14]">
-                        Give Protocol
+                      <a
+                        href="https://givehope-x8qk.onrender.com/"
+                        className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      >
+                        Give Protocol ↗
                       </a>
                     </span>
                     <br />
                     <span className="mt-1 inline-block">Sep 2025 — Present</span>
                   </p>
                   <p>
-                    <span className="text-white">
+                    <span>
                       Software Engineer (Intern) ·{" "}
-                      <a href="https://hata.io/" className="transition-colors hover:text-[#39ff14]">
-                        Hata Technologies
+                      <a
+                        href="https://hata.io/"
+                        className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      >
+                        Hata Technologies ↗
                       </a>
                     </span>
                     <br />
