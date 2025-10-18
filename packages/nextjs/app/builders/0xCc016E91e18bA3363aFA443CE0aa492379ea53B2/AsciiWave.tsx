@@ -10,10 +10,12 @@ const amplitude = 17;
 export function AsciiWave() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tick, setTick] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [waveLength, setWaveLength] = useState(35); // will be updated based on container width
 
   // Animation tick
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => setTick(prev => prev + 1), speed);
     return () => clearInterval(interval);
   }, []);
@@ -31,6 +33,11 @@ export function AsciiWave() {
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
+
+  if (!mounted) {
+    // render an empty stable shell during SSR to avoid mismatch
+    return <div ref={containerRef} className="h-64 w-full" />;
+  }
 
   const lines = Array.from({ length: numLines }, (_, i) => {
     const xOffset = Math.round((Math.sin((tick + i) * 0.15) + 1) * amplitude);
