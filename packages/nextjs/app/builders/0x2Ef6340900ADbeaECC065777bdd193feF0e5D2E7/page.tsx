@@ -1,6 +1,6 @@
 import Image from "next/image";
+import { DiscordIconSVG, GitHubIconSVG, XIconSVG } from "./SocialIcons";
 import type { Metadata, NextPage } from "next";
-import { DiscordIconSVG, GitHubIconSVG, XIconSVG } from "~~/components/assets/SocialIcons";
 import { Address } from "~~/components/scaffold-eth";
 
 export const metadata: Metadata = {
