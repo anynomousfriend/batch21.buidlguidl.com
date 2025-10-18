@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Press_Start_2P } from "next/font/google";
 import type { NextPage } from "next";
 import { useTheme } from "next-themes";
-import { SwitchTheme } from "~~/components/SwitchTheme";
 
 const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"] });
 
@@ -64,11 +63,6 @@ const Eddy: NextPage = () => {
     <main
       className={`relative flex min-h-screen items-center justify-center overflow-hidden ${bgGradient} px-4 ${textColor}`}
     >
-      {/* Theme Toggle - Fixed position */}
-      <div className="fixed right-4 top-4 z-20 sm:right-8 sm:top-8">
-        <SwitchTheme />
-      </div>
-
       {/* Falling stars (dark mode) / Snowflakes (light mode) */}
       <div className="pointer-events-none absolute inset-0">
         {fallingItems.map(item => (
