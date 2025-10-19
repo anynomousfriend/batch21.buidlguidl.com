@@ -1,112 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Press_Start_2P } from "next/font/google";
+import { FallingAnimation } from "./FallingAnimation";
 import type { NextPage } from "next";
-import { useTheme } from "next-themes";
 
 const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"] });
 
 const Eddy: NextPage = () => {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [fallingItems, setFallingItems] = useState<
-    Array<{
-      id: number;
-      left: number;
-      animationDuration: number;
-      animationDelay: number;
-      size: string;
-      symbol: string;
-    }>
-  >([]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Generate falling stars/snow when mounted or theme changes
-  useEffect(() => {
-    if (mounted) {
-      const items = Array.from({ length: 70 }, (_, i) => ({
-        id: i,
-        left: Math.random() * 100,
-        animationDuration: 8 + Math.random() * 10,
-        animationDelay: Math.random() * 4, // Stagger start times
-        size: Math.random() > 0.7 ? "sm" : "xs",
-        symbol: (() => {
-          const rand = Math.random();
-          if (rand > 0.92) return "ufo"; // 8% UFOs
-          if (rand > 0.8) return "moon"; // 12% moons
-          return "star"; // 80% stars
-        })(),
-      }));
-      setFallingItems(items);
-    }
-  }, [mounted, resolvedTheme]);
-
-  const isDarkMode = resolvedTheme === "dark";
-
-  // Theme-specific colors
-  const bgGradient = isDarkMode
-    ? "bg-[radial-gradient(circle_at_top,_#161616,_#010101_70%)]"
-    : "bg-[radial-gradient(circle_at_top,_#e0f2fe,_#bae6fd_70%)]";
-
-  const textColor = isDarkMode ? "text-white" : "text-gray-900";
-  const borderColor = isDarkMode ? "border-white" : "border-blue-600";
-  const glowColor = isDarkMode ? "shadow-[0_0_38px_rgba(57,255,20,0.35)]" : "shadow-[0_0_38px_rgba(37,99,235,0.35)]";
-  const bgOpacity = isDarkMode ? "bg-black/85" : "bg-white/80";
-
-  if (!mounted) return null;
-
   return (
-    <main
-      className={`relative flex min-h-screen items-center justify-center overflow-hidden ${bgGradient} px-4 ${textColor}`}
-    >
-      {/* Falling stars (dark mode) / Snowflakes (light mode) */}
-      <div className="pointer-events-none absolute inset-0">
-        {fallingItems.map(item => (
-          <div
-            key={item.id}
-            className={`absolute animate-fall ${isDarkMode ? "text-white" : "text-white"}`}
-            style={{
-              left: `${item.left}%`,
-              top: "-20px",
-              animationDuration: `${item.animationDuration}s`,
-              animationDelay: `${item.animationDelay}s`,
-              fontSize: item.size === "lg" ? "18px" : "14px",
-              opacity: isDarkMode ? 0.7 : 0.8,
-            }}
-          >
-            {isDarkMode ? (item.symbol === "ufo" ? "🛸" : item.symbol === "moon" ? "☾" : "✦") : "❄"}
-          </div>
-        ))}
-      </div>
-
-      <style jsx>{`
-        @keyframes fall {
-          0% {
-            transform: translateY(-20px) rotate(0deg);
-            opacity: 0;
-          }
-          10% {
-            opacity: 1;
-          }
-          90% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(100vh) rotate(720deg);
-            opacity: 0;
-          }
-        }
-        .animate-fall {
-          animation: fall linear infinite;
-        }
-      `}</style>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_#e0f2fe,_#bae6fd_70%)] px-4 text-gray-900 dark:bg-[radial-gradient(circle_at_top,_#161616,_#010101_70%)] dark:text-white">
+      <FallingAnimation />
 
       <section
-        className={`relative z-10 -mt-[10vh] flex w-full flex-col ${borderColor} ${bgOpacity} ${glowColor} border-2 border-dashed px-4 py-6 sm:h-[60vh] sm:w-[90vw] sm:px-6 sm:py-8 md:w-[70vw] lg:w-[50vw] lg:max-w-3xl lg:px-8 ${pressStart.className}`}
+        className={`relative z-10 -mt-[10vh] flex w-full flex-col border-2 border-dashed border-blue-600 bg-white/80 px-4 py-6 shadow-[0_0_38px_rgba(37,99,235,0.35)] dark:border-white dark:bg-black/85 dark:shadow-[0_0_38px_rgba(57,255,20,0.35)] sm:h-[60vh] sm:w-[90vw] sm:px-6 sm:py-8 md:w-[70vw] lg:w-[50vw] lg:max-w-3xl lg:px-8 ${pressStart.className}`}
       >
         <div className="flex flex-1">
           <div className="flex flex-1 flex-col items-center justify-between px-2 py-4 sm:px-4 lg:px-6">
@@ -128,7 +34,7 @@ const Eddy: NextPage = () => {
                   <li>
                     <a
                       href="https://github.com/Eddy3129"
-                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                     >
                       GitHub ↗
                     </a>
@@ -136,7 +42,7 @@ const Eddy: NextPage = () => {
                   <li>
                     <a
                       href="https://t.me/Eddy3129"
-                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                     >
                       Telegram ↗
                     </a>
@@ -144,7 +50,7 @@ const Eddy: NextPage = () => {
                   <li>
                     <a
                       href="https://x.com/eddyy_eth"
-                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                     >
                       X (Twitter) ↗
                     </a>
@@ -152,7 +58,7 @@ const Eddy: NextPage = () => {
                   <li>
                     <a
                       href="https://www.linkedin.com/in/eddy-limfy/"
-                      className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                     >
                       LinkedIn ↗
                     </a>
@@ -168,7 +74,7 @@ const Eddy: NextPage = () => {
                       Co-Founder ·{" "}
                       <a
                         href="https://givehope-x8qk.onrender.com/"
-                        className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                       >
                         Give Protocol ↗
                       </a>
@@ -181,7 +87,7 @@ const Eddy: NextPage = () => {
                       Software Engineer (Intern) ·{" "}
                       <a
                         href="https://hata.io/"
-                        className={`transition-colors ${isDarkMode ? "hover:text-[#39ff14]" : "hover:text-blue-600"}`}
+                        className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
                       >
                         Hata Technologies ↗
                       </a>
