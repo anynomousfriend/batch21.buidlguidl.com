@@ -1,134 +1,10 @@
 "use client";
 
-import React from "react";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { ProfileAvatar } from "./ProfileAvatar";
+import { socialLinks } from "./SocialIcons";
 import type { NextPage } from "next";
-import { normalize } from "viem/ens";
-import { useEnsAvatar, useEnsName } from "wagmi";
-// Import Scaffold-ETH components
-import { Address, BlockieAvatar } from "~~/components/scaffold-eth";
-
-// Error Boundary Component
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error?: Error }> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    console.error("ErrorBoundary caught an error:", error);
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("ErrorBoundary caught an error:", { error, errorInfo });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-base-100">
-          <div className="card bg-error text-error-content">
-            <div className="card-body">
-              <h2 className="card-title">Something went wrong!</h2>
-              <p>Error: {this.state.error?.message}</p>
-              <div className="card-actions">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => this.setState({ hasError: false, error: undefined })}
-                >
-                  Try again
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
-// Add error logging with better error details
-if (typeof window !== "undefined") {
-  window.addEventListener("unhandledrejection", event => {
-    console.error("Unhandled promise rejection details:", {
-      reason: event.reason,
-      promise: event.promise,
-      stack: event.reason?.stack,
-      stringified: JSON.stringify(event.reason, null, 2),
-    });
-
-    // Prevent the default behavior of logging "[object Object]"
-    event.preventDefault();
-  });
-
-  window.addEventListener("error", event => {
-    console.error("Global error:", {
-      message: event.message,
-      filename: event.filename,
-      line: event.lineno,
-      error: event.error,
-      stack: event.error?.stack,
-    });
-  });
-}
-// Icon Components - using simple text/emoji approach (no SVG paths!)
-const XIcon = () => <span className="text-lg font-bold">𝕏</span>;
-
-const LinkedInIcon = () => <span className="text-lg font-bold">in</span>;
-
-const GitHubIcon = () => <span className="text-lg">⚡</span>;
-
-const GlobeIcon = () => <span className="text-lg">🌐</span>;
-
-// Social link types
-type IconKey = "x" | "linkedin" | "github" | "globe";
-
-type SocialLink = {
-  href: string;
-  icon: IconKey;
-  title: string;
-};
-
-const socialLinks: SocialLink[] = [
-  { href: "https://x.com/diegobianqui", icon: "x", title: "X (Twitter)" },
-  { href: "https://www.linkedin.com/in/diegobianqui/", icon: "linkedin", title: "LinkedIn" },
-  { href: "https://github.com/diegobianqui", icon: "github", title: "GitHub" },
-  {
-    href: "https://speedrunethereum.com/builders/diegodev.eth",
-    icon: "globe",
-    title: "Speed Run Ethereum",
-  },
-  { href: "https://profiles.cyfrin.io/u/diegobianqui", icon: "globe", title: "Cyfrin Profile" },
-];
-
-// Profile Avatar Component - matching Address component behavior
-const ProfileAvatar = ({ address, size }: { address: string; size: number }) => {
-  // Always call hooks at the top level, matching Address component logic
-  const ensNameResult = useEnsName({
-    address: address as `0x${string}`,
-    chainId: 1,
-    query: {
-      enabled: Boolean(address),
-    },
-  });
-
-  const ensAvatarResult = useEnsAvatar({
-    name: ensNameResult.data ? normalize(ensNameResult.data) : undefined,
-    chainId: 1,
-    query: {
-      enabled: Boolean(ensNameResult.data),
-      gcTime: 30_000,
-    },
-  });
-
-  console.log("ProfileAvatar - ENS name:", ensNameResult.data);
-  console.log("ProfileAvatar - ENS avatar:", ensAvatarResult.data);
-
-  // Use the same BlockieAvatar component as Address, with the same props
-  return <BlockieAvatar address={address as `0x${string}`} ensImage={ensAvatarResult.data} size={size} />;
-};
+import { Address } from "~~/components/scaffold-eth";
 
 const DiegoBianquiPageContent: React.FC = () => {
   return (
@@ -169,21 +45,21 @@ const DiegoBianquiPageContent: React.FC = () => {
             {/* Social Links */}
             <div className="divider">Connect</div>
             <div className="flex flex-wrap gap-3 justify-center w-full">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-circle btn-primary hover:btn-secondary"
-                  title={social.title}
-                >
-                  {social.icon === "x" && <XIcon />}
-                  {social.icon === "linkedin" && <LinkedInIcon />}
-                  {social.icon === "github" && <GitHubIcon />}
-                  {social.icon === "globe" && <GlobeIcon />}
-                </a>
-              ))}
+              {socialLinks.map((social, index) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-circle btn-primary hover:btn-secondary"
+                    title={social.title}
+                  >
+                    <IconComponent />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
