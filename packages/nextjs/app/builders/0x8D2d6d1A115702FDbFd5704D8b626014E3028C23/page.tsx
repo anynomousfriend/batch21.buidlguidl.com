@@ -1,5 +1,3 @@
-"use client";
-
 import { ErrorBoundary } from "./ErrorBoundary";
 import { ProfileAvatar } from "./ProfileAvatar";
 import { socialLinks } from "./SocialIcons";
