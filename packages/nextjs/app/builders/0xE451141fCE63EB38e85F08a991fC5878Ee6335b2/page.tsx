@@ -105,7 +105,7 @@ const ParizvalPage: NextPage = () => {
           <div className="rounded-2xl border border-cyan-500/30 shadow-lg shadow-cyan-500/10 p-6 bg-gray-100 dark:bg-gray-900/50 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-300 mb-4">Web3 Projects Portfolio</h2>
             <div className="space-y-4">
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40 hover:bg-gray-200 dark:hover:bg-gray-800/70 transition-colors">
+              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
                 <h3 className="font-semibold text-cyan-500 dark:text-cyan-400">Stylish Lending Hook</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   🪝 A CowSwap Hook which deposits the output Tokens into Lending Protocols.
@@ -119,7 +119,7 @@ const ParizvalPage: NextPage = () => {
                   View Repo
                 </a>
               </div>
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40 hover:bg-gray-200 dark:hover:bg-gray-800/70 transition-colors">
+              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
                 <h3 className="font-semibold text-cyan-500 dark:text-cyan-400"> Shadow Protector</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   ⏳ Executing Correct DeFi Transaction at the Correct Block.
@@ -139,7 +139,7 @@ const ParizvalPage: NextPage = () => {
           <div className="rounded-2xl mt-4 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 p-6 bg-gray-100 dark:bg-gray-900/50 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-300 mb-4">BuidlGuidl CTF</h2>
             <div className="space-y-4">
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40 hover:bg-gray-200 dark:hover:bg-gray-800/70 transition-colors">
+              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
                 <h3 className="font-semibold text-cyan-500 dark:text-cyan-400">
                   🚩 Capture 10 Flags by solving 10 Solidity puzzles
                 </h3>
@@ -157,7 +157,7 @@ const ParizvalPage: NextPage = () => {
           <div className="rounded-2xl mt-4 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 p-6 bg-gray-100 dark:bg-gray-900/50 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-300 mb-4">Education</h2>
             <div className="space-y-4">
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40 hover:bg-gray-200 dark:hover:bg-gray-800/70 transition-colors">
+              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
                 <h3 className="font-semibold text-cyan-500 dark:text-cyan-400">
                   🎓 Completed Polkadot Blockchain Academy Course at NUS,Singapore
                 </h3>
