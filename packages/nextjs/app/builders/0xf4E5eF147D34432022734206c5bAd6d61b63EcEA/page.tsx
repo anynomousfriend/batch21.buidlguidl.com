@@ -21,7 +21,7 @@ const LetmehateUPage: NextPage = () => {
               <div className="avatar mb-4">
                 <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                   <Image
-                    src="./public//builders/letmehateu-avatar.jpg"
+                    src="/builders/letmehateu-avatar.jpg"
                     alt="letmehateu avatar"
                     width={96}
                     height={96}
