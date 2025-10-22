@@ -1,23 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const { data: checkedInCounter } = useScaffoldReadContract({
+  const { data: checkedInCounter, isLoading } = useScaffoldReadContract({
     contractName: "BatchRegistry",
     functionName: "checkedInCounter",
   });
-
-  useEffect(() => {
-    if (checkedInCounter !== undefined) {
-      setIsLoading(false);
-    }
-  }, [checkedInCounter]);
 
   return (
     <>
