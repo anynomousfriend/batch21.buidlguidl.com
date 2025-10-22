@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SkillsComponent } from "./Components";
+import { SkillsComponent, externalLinks } from "./Components";
 import type { Metadata, NextPage } from "next";
 import { Address } from "~~/components/scaffold-eth";
 
@@ -50,7 +50,7 @@ const ParizvalPage: NextPage = () => {
                 <li>
                   <a
                     className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-200 hover:underline"
-                    href="https://github.com/Parizval"
+                    href={externalLinks.github}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -60,7 +60,7 @@ const ParizvalPage: NextPage = () => {
                 <li>
                   <a
                     className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-200 hover:underline"
-                    href="https://x.com/Parizval_Wizard"
+                    href={externalLinks.twitter}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -99,7 +99,7 @@ const ParizvalPage: NextPage = () => {
                   🪝 A CowSwap Hook which deposits the output Tokens into Lending Protocols.
                 </p>
                 <a
-                  href="https://ethglobal.com/showcase/stylish-lending-hook-t1c3u"
+                  href={externalLinks.ethglboal}
                   className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
                   target="_blank"
                   rel="noreferrer"
@@ -113,7 +113,7 @@ const ParizvalPage: NextPage = () => {
                   ⏳ Executing Correct DeFi Transaction at the Correct Block.
                 </p>
                 <a
-                  href="https://github.com/shadow-protector/"
+                  href={externalLinks.shadowProtector}
                   className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
                   target="_blank"
                   rel="noreferrer"
@@ -132,7 +132,7 @@ const ParizvalPage: NextPage = () => {
                   🚩 Capture 10 Flags by solving 10 Solidity puzzles
                 </h3>
                 <a
-                  href="https://ctf.buidlguidl.com/profile/0x7487F73c7D146c26a89415568D9f34D622780e1C"
+                  href={externalLinks.ctfProfile}
                   className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
                   target="_blank"
                   rel="noreferrer"
@@ -150,7 +150,7 @@ const ParizvalPage: NextPage = () => {
                   🎓 Completed Polkadot Blockchain Academy Course at NUS,Singapore
                 </h3>
                 <a
-                  href="https://kodadot.xyz/ahp/gallery/171-27"
+                  href={externalLinks.polkadotDegree}
                   className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
                   target="_blank"
                   rel="noreferrer"
