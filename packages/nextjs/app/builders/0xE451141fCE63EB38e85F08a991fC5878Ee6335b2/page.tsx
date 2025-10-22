@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SkillsComponent } from "./Components";
 import type { Metadata, NextPage } from "next";
 import { Address } from "~~/components/scaffold-eth";
 
@@ -40,20 +41,7 @@ const ParizvalPage: NextPage = () => {
               <h2 className="text-sm uppercase tracking-wider text-cyan-500 dark:text-cyan-400 text-center">
                 Tech stack
               </h2>
-              <div className="mt-2 flex flex-wrap gap-2 justify-center">
-                <span className="text-xs px-2 py-1 rounded-full border border-green-500/50 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  Solidity
-                </span>
-                <span className="text-xs px-2 py-1 rounded-full border border-green-500/50 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  Rust
-                </span>
-                <span className="text-xs px-2 py-1 rounded-full border border-green-500/50 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  Typescript
-                </span>
-                <span className="text-xs px-2 py-1 rounded-full border border-green-500/50 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                  Python
-                </span>
-              </div>
+              <SkillsComponent />
             </div>
 
             <div className="mt-6 border-t border-cyan-500/20 pt-4">
