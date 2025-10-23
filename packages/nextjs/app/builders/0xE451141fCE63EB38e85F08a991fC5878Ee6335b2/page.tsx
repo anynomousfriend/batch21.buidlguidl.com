@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SkillsComponent, externalLinks } from "./Components";
+import { ProjectsComponent, SkillsComponent, externalLinks } from "./Components";
 import type { Metadata, NextPage } from "next";
 import { Address } from "~~/components/scaffold-eth";
 
@@ -92,37 +92,7 @@ const ParizvalPage: NextPage = () => {
         <section className="md:col-span-2">
           <div className="rounded-2xl border border-cyan-500/30 shadow-lg shadow-cyan-500/10 p-6 bg-gray-100 dark:bg-gray-900/50 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-300 mb-4">Web3 Projects Portfolio</h2>
-            <div className="space-y-4">
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
-                <h3 className="font-semibold text-cyan-500 dark:text-cyan-400">Stylish Lending Hook</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  🪝 A CowSwap Hook which deposits the output Tokens into Lending Protocols.
-                </p>
-                <a
-                  href={externalLinks.ethglboal}
-                  className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View Repo
-                </a>
-              </div>
-              <div className="rounded-lg border border-cyan-500/20 p-4 bg-white dark:bg-gray-800/40">
-                <h3 className="font-semibold text-cyan-500 dark:text-cyan-400"> Shadow Protector</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  ⏳ Executing Correct DeFi Transaction at the Correct Block.
-                </p>
-                <a
-                  href={externalLinks.shadowProtector}
-                  className="text-xs text-cyan-600 dark:text-cyan-500 hover:underline mt-2 inline-block"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View Repo
-                </a>
-              </div>
-              {/* Add more project cards as needed */}
-            </div>
+            <ProjectsComponent />
           </div>
           <div className="rounded-2xl mt-4 border border-cyan-500/30 shadow-lg shadow-cyan-500/10 p-6 bg-gray-100 dark:bg-gray-900/50 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-300 mb-4">BuidlGuidl CTF</h2>
