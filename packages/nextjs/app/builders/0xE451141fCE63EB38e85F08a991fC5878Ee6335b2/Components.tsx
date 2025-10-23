@@ -8,13 +8,6 @@ export const externalLinks = {
   polkadotDegree: "https://kodadot.xyz/ahp/gallery/171-27",
 };
 
-//   [
-//   { name: "Github Profile", link: "https://github.com/Parizval" },
-//   { name: "X/Twitter", link: "https://x.com/Parizval_Wizard" },
-//   { name: "Batch Home", link: "/" },
-//   { name: "Debug Tools", link: "/debug" },
-// ];
-
 export function SkillsComponent() {
   return (
     <div className="mt-2 flex flex-wrap gap-2 justify-center">
