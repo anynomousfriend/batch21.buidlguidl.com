@@ -1,10 +1,30 @@
-"use client";
-
 import { Press_Start_2P } from "next/font/google";
 import { FallingAnimation } from "./FallingAnimation";
 import type { NextPage } from "next";
 
 const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"] });
+
+const SOCIAL_LINKS = [
+  { href: "https://github.com/Eddy3129", text: "GitHub ↗" },
+  { href: "https://t.me/Eddy3129", text: "Telegram ↗" },
+  { href: "https://x.com/eddyy_eth", text: "X (Twitter) ↗" },
+  { href: "https://www.linkedin.com/in/eddy-limfy/", text: "LinkedIn ↗" },
+];
+
+const EXPERIENCE = [
+  {
+    role: "Co-Founder",
+    company: "Give Protocol",
+    href: "https://givehope-x8qk.onrender.com/",
+    period: "Sep 2025 — Present",
+  },
+  {
+    role: "Software Engineer (Intern)",
+    company: "Hata Technologies",
+    href: "https://hata.io/",
+    period: "Jan — Mar 2025",
+  },
+];
 
 const Eddy: NextPage = () => {
   return (
@@ -31,70 +51,31 @@ const Eddy: NextPage = () => {
               <div className="py-2 text-center uppercase">
                 <p className="mb-3 text-[9px] sm:mb-4 sm:text-[10px]">[ Socials ]</p>
                 <ul className="space-y-2 text-[8px] normal-case tracking-normal sm:space-y-3 sm:text-[9px]">
-                  <li>
-                    <a
-                      href="https://github.com/Eddy3129"
-                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                    >
-                      GitHub ↗
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://t.me/Eddy3129"
-                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                    >
-                      Telegram ↗
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://x.com/eddyy_eth"
-                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                    >
-                      X (Twitter) ↗
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.linkedin.com/in/eddy-limfy/"
-                      className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                    >
-                      LinkedIn ↗
-                    </a>
-                  </li>
+                  {SOCIAL_LINKS.map(link => (
+                    <li key={link.href}>
+                      <a href={link.href} className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]">
+                        {link.text}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               <div className="py-2 text-center uppercase">
                 <p className="mb-3 text-[9px] sm:mb-4 sm:text-[10px]">[ Experience ]</p>
                 <div className="space-y-3 text-[8px] normal-case tracking-normal opacity-80 sm:space-y-4 sm:text-[9px]">
-                  <p>
-                    <span>
-                      Co-Founder ·{" "}
-                      <a
-                        href="https://givehope-x8qk.onrender.com/"
-                        className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                      >
-                        Give Protocol ↗
-                      </a>
-                    </span>
-                    <br />
-                    <span className="mt-1 inline-block">Sep 2025 — Present</span>
-                  </p>
-                  <p>
-                    <span>
-                      Software Engineer (Intern) ·{" "}
-                      <a
-                        href="https://hata.io/"
-                        className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]"
-                      >
-                        Hata Technologies ↗
-                      </a>
-                    </span>
-                    <br />
-                    <span className="mt-1 inline-block">Jan — Mar 2025</span>
-                  </p>
+                  {EXPERIENCE.map(exp => (
+                    <p key={exp.href}>
+                      <span>
+                        {exp.role} ·{" "}
+                        <a href={exp.href} className="transition-colors hover:text-blue-600 dark:hover:text-[#39ff14]">
+                          {exp.company} ↗
+                        </a>
+                      </span>
+                      <br />
+                      <span className="mt-1 inline-block">{exp.period}</span>
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>

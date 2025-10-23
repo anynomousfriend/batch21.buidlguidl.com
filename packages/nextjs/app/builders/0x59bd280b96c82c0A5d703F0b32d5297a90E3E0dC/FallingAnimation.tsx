@@ -1,45 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+
+// Pseudo-random number generator for deterministic values
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
 
 export const FallingAnimation = () => {
-  const [mounted, setMounted] = useState(false);
-  const [fallingItems, setFallingItems] = useState<
-    Array<{
-      id: number;
-      left: number;
-      animationDuration: number;
-      animationDelay: number;
-      size: string;
-      symbol: string;
-    }>
-  >([]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Generate falling stars/snow when mounted
-  useEffect(() => {
-    if (mounted) {
-      const items = Array.from({ length: 70 }, (_, i) => ({
+  const fallingItems = useMemo(
+    () =>
+      Array.from({ length: 70 }, (_, i) => ({
         id: i,
-        left: Math.random() * 100,
-        animationDuration: 8 + Math.random() * 10,
-        animationDelay: Math.random() * 4,
-        size: Math.random() > 0.7 ? "sm" : "xs",
+        left: seededRandom(i * 12.9898 + 78.233) * 100,
+        animationDuration: 8 + seededRandom(i * 43.758 + 94.673) * 10,
+        animationDelay: seededRandom(i * 67.891 + 23.456) * 4,
+        size: seededRandom(i * 34.567 + 56.789) > 0.7 ? "sm" : "xs",
         symbol: (() => {
-          const rand = Math.random();
+          const rand = seededRandom(i * 89.012 + 34.567);
           if (rand > 0.92) return "ufo"; // 8% UFOs
           if (rand > 0.8) return "moon"; // 12% moons
           return "star"; // 80% stars
         })(),
-      }));
-      setFallingItems(items);
-    }
-  }, [mounted]);
-
-  if (!mounted) return null;
+      })),
+    [],
+  );
 
   return (
     <>
