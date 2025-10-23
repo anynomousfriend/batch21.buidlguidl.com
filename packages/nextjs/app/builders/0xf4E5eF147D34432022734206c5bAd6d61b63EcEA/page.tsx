@@ -65,7 +65,7 @@ const LetmehateUPage: NextPage = () => {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-outline btn-primary gap-2 hover:scale-110 transition-transform"
+                    className="btn btn-outline btn-primary gap-2 hover:scale-110 transition-transform dark:text-gray-300 dark:hover:text-white"
                   >
                     <span>{icon}</span>
                     {label}
