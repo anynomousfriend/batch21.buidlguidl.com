@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { TimelineEvent } from "./types";
+"use client";
+
+import { useMemo } from "react";
 import { useGitHubPREvents } from "./useGitHubPREvents";
 import { useCheckInEventsFromSubgraph, useGraduationNFTEventsFromSubgraph } from "./useSubgraphEvents";
 
@@ -12,48 +13,26 @@ export interface TimelineConfig {
   graduationNFTAddress?: string;
 }
 
-interface UseTimelineEventsReturn {
-  events: TimelineEvent[];
-  isLoading: boolean;
-  error: Error | null;
-}
-
-export const useTimelineEvents = (config: TimelineConfig): UseTimelineEventsReturn => {
-  const [allEvents, setAllEvents] = useState<TimelineEvent[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
+export const useTimelineEvents = (config: TimelineConfig) => {
   const checkInResult = useCheckInEventsFromSubgraph();
   const graduationNFTResult = useGraduationNFTEventsFromSubgraph();
-  const gitHubPRResult = useGitHubPREvents(config.githubOwner, config.githubRepo, config.githubToken);
+  const gitHubPRResult = useGitHubPREvents({
+    owner: config.githubOwner,
+    repo: config.githubRepo,
+  });
 
-  useEffect(() => {
-    const loading = checkInResult.isLoading || graduationNFTResult.isLoading || gitHubPRResult.isLoading;
+  // Compute merged and sorted events without extra state
+  const data = useMemo(() => {
+    return [...(checkInResult.data ?? []), ...(graduationNFTResult.data ?? []), ...(gitHubPRResult.data ?? [])].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+  }, [checkInResult.data, graduationNFTResult.data, gitHubPRResult.data]);
 
-    const errors = checkInResult.error || graduationNFTResult.error || gitHubPRResult.error || null;
+  // Return loading only if subgraph queries are loading (don't wait for GitHub)
+  const isLoading = checkInResult.isLoading || graduationNFTResult.isLoading;
 
-    setIsLoading(loading);
-    setError(errors);
+  // Show error only from subgraph queries (GitHub errors won't block display)
+  const error = checkInResult.error || graduationNFTResult.error;
 
-    if (!loading) {
-      const merged: TimelineEvent[] = [
-        ...(checkInResult.data ?? []),
-        ...(graduationNFTResult.data ?? []),
-        ...(gitHubPRResult.events ?? []),
-      ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-      setAllEvents(merged);
-    }
-  }, [
-    checkInResult.data,
-    graduationNFTResult.data,
-    gitHubPRResult.events,
-    checkInResult.isLoading,
-    graduationNFTResult.isLoading,
-    gitHubPRResult.isLoading,
-    checkInResult.error,
-    graduationNFTResult.error,
-    gitHubPRResult.error,
-  ]);
-
-  return { events: allEvents, isLoading, error };
+  return { data, isLoading, error };
 };
